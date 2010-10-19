@@ -1,10 +1,11 @@
 LOCAL_PATH := $(call my-dir)
 
-# Installs boot logo
-file := $(TARGET_ROOT_OUT)/initlogo.rle
-ALL_PREBUILT += $(file)
-$(file) : $(LOCAL_PATH)/initlogo.rle | $(ACP)
+ifeq ($(TARGET_PROVIDES_INIT_RC),true)
+file := $(TARGET_ROOT_OUT)/init.rc
+$(file): $(LOCAL_PATH)/init.rc | $(ACP)
         $(transform-prebuilt-to-target)
+ALL_PREBUILT += $(file)
+endif
 
 # Kernel installation - disabled for now. Kernel build is outside
 # of Android scope

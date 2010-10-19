@@ -3,8 +3,7 @@
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_KERNEL := true
 
-# Enable this when there is a custom init.rc
-#TARGET_PROVIDES_INIT_RC := true
+TARGET_PROVIDES_INIT_RC := true
 
 TARGET_USE_GENERIC_AUDIO := true
 
@@ -23,6 +22,8 @@ USE_CAMERA_STUB := true
 PRODUCT_COPY_FILES += \
 	device/buglabs/bug20/vold.conf:system/etc/vold.conf \
 	device/buglabs/bug20/vold.fstab:system/etc/vold.fstab \
-	device/buglabs/bug20/asound.conf:system/etc/asound.conf
+	device/buglabs/bug20/asound.conf:system/etc/asound.conf \
+	device/buglabs/bug20/initlogo.rle:root/initlogo.rle.bak
+
 
 include frameworks/base/data/sounds/AudioPackage2.mk
