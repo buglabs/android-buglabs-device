@@ -4,11 +4,6 @@
 on early-init
     symlink /initlogo.rle.bak /initlogo.rle
 
-#    setprop log.tag.Event_Hub DEBUG
-#    setprop log.tag.InputManagerService ERROR
-#    setprop log.tag.dalvikvm ERROR
-#    setprop log.tag.KeyInputQueue DEBUG
-
 on init
 
 sysclktz 0
@@ -25,6 +20,12 @@ loglevel 3
     export EXTERNAL_STORAGE /mnt/sdcard
     export ASEC_MOUNTPOINT /mnt/asec
     export BOOTCLASSPATH /system/framework/core.jar:/system/framework/ext.jar:/system/framework/framework.jar:/system/framework/android.policy.jar:/system/framework/services.jar
+
+#    setprop log.tag.Event_Hub ERROR
+#    setprop log.tag.InputManagerService ERROR
+#    setprop log.tag.dalvikvm ERROR
+#    setprop log.tag.KeyInputQueue ERROR
+#    setprop log.tag.InputDevice DEBUG
 
 # Backward compatibility
     symlink /system/etc /etc
@@ -171,6 +172,12 @@ loglevel 3
     chmod 0770 /data/lost+found
     chown root root /cache/lost+found
     chmod 0770 /cache/lost+found
+
+on early-boot
+    mkdir root root /data/system/tslib
+    chmod 0777 /data/system/tslib
+    exec /system/bin/logwrapper /system/bin/calibrate.sh
+    chmod 0777 /data/system/tslib/pointercal
 
 on boot
 # basic network init

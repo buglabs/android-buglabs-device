@@ -14,6 +14,8 @@ TARGET_BOARD_PLATFORM := omap3
 
 BOARD_HAVE_BLUETOOTH := false
 
+BOARD_USES_TSLIB := true
+
 BOARD_USES_ALSA_AUDIO := true
 BUILD_WITH_ALSA_UTILS := true
 
@@ -23,7 +25,9 @@ PRODUCT_COPY_FILES += \
 	device/buglabs/bug20/vold.conf:system/etc/vold.conf \
 	device/buglabs/bug20/vold.fstab:system/etc/vold.fstab \
 	device/buglabs/bug20/asound.conf:system/etc/asound.conf \
-	device/buglabs/bug20/initlogo.rle:root/initlogo.rle.bak
-
+	device/buglabs/bug20/initlogo.rle:root/initlogo.rle.bak \
+	device/buglabs/bug20/ts.conf:system/etc/ts.conf \
+	device/buglabs/bug20/ts.env:system/etc/ts.env \
+	device/buglabs/bug20/calibrate.sh:system/bin/calibrate.sh
 
 include frameworks/base/data/sounds/AudioPackage2.mk
