@@ -28,6 +28,7 @@ PRODUCT_COPY_FILES += \
 	device/buglabs/bug20/initlogo.rle:root/initlogo.rle.bak \
 	device/buglabs/bug20/ts.conf:system/etc/ts.conf \
 	device/buglabs/bug20/ts.env:system/etc/ts.env \
-	device/buglabs/bug20/calibrate.sh:system/bin/calibrate.sh
+	device/buglabs/bug20/calibrate.sh:system/bin/calibrate.sh \
+	device/buglabsb/bug20/init.rc:root/init.rc
 
 include frameworks/base/data/sounds/AudioPackage2.mk
