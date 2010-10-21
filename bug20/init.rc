@@ -30,6 +30,8 @@ loglevel 3
 # Backward compatibility
     symlink /system/etc /etc
     symlink /sys/kernel/debug /d
+# for bug 2.0
+    symlink /dev/graphics/fb0 /dev/fb0
 
 # create mountpoints
     mkdir /mnt 0775 root system
