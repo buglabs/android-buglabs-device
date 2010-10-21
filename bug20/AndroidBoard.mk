@@ -1,12 +1,5 @@
 LOCAL_PATH := $(call my-dir)
 
-ifeq ($(TARGET_PROVIDES_INIT_RC),true)
-file := $(TARGET_ROOT_OUT)/init.rc
-$(file): $(LOCAL_PATH)/init.rc | $(ACP)
-        $(transform-prebuilt-to-target)
-ALL_PREBUILT += $(file)
-endif
-
 # Kernel installation - disabled for now. Kernel build is outside
 # of Android scope
 #
