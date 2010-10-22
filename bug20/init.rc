@@ -181,6 +181,9 @@ on early-boot
     exec /system/bin/logwrapper /system/bin/calibrate.sh
     chmod 0777 /data/system/tslib/pointercal
 
+    insmod /system/lib/modules/bmi_video_core.ko
+    insmod /system/lib/modules/bmi_lcd_core.ko
+
 on boot
 # basic network init
     ifup lo
