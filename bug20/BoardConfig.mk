@@ -37,7 +37,6 @@ WIFI_DRIVER_MODULE_ARG := "fw_name=/system/etc/firmware/sd8686.bin"
 WIFI_DRIVER_MODULE_NAME := "libertas_sdio"
 
 PRODUCT_COPY_FILES += \
-	device/buglabs/bug20/vold.conf:system/etc/vold.conf \
 	device/buglabs/bug20/vold.fstab:system/etc/vold.fstab \
 	device/buglabs/bug20/asound.conf:system/etc/asound.conf \
 	device/buglabs/bug20/initlogo.rle:root/initlogo.rle.bak \
