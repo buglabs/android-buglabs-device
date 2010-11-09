@@ -33,7 +33,7 @@ BOARD_WLAN_DEVICE := libertas
 WIFI_DRIVER_MODULE_PATH := "/system/lib/modules/libertas_sdio.ko"
 WIFI_DRIVER_FW_STA_PATH := "/system/etc/firmware/sd8686.bin"
 #WIFI_DRIVER_FW_AP_PATH := "/system/etc/firmware/sd8686.bin"
-WIFI_DRIVER_MODULE_ARG := "fw_name=/system/etc/firmware/sd8686.bin"
+WIFI_DRIVER_MODULE_ARG := "fw_name=/system/etc/firmware/sd8686.bin helper_name=/system/etc/firmware/sd8686_helper.bin"
 WIFI_DRIVER_MODULE_NAME := "libertas_sdio"
 
 PRODUCT_COPY_FILES += \
@@ -47,6 +47,7 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_COPY_FILES += \
 	device/buglabs/bug20/sd8686.bin:system/etc/firmware/sd8686.bin \
+	device/buglabs/bug20/sd8686_helper.bin:system/etc/firmware/sd8686_helper.bin \
 	device/buglabs/bug20/Marvell-Licence.txt:system/etc/firmware/Marvell-Licence.txt
 
 include frameworks/base/data/sounds/AudioPackage2.mk
