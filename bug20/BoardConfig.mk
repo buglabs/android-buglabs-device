@@ -31,9 +31,8 @@ BOARD_WPA_SUPPLICANT_DRIVER := WEXT
 WPA_SUPPLICANT_VERSION := VER_0_6_X
 BOARD_WLAN_DEVICE := libertas
 WIFI_DRIVER_MODULE_PATH := "/system/lib/modules/libertas_sdio.ko"
-WIFI_DRIVER_FW_STA_PATH := "/system/etc/firmware/sd8686.bin"
+#WIFI_DRIVER_FW_STA_PATH := "/system/etc/firmware/sd8686.bin"
 #WIFI_DRIVER_FW_AP_PATH := "/system/etc/firmware/sd8686.bin"
-WIFI_DRIVER_MODULE_ARG := "fw_name=/system/etc/firmware/sd8686.bin helper_name=/system/etc/firmware/sd8686_helper.bin"
 WIFI_DRIVER_MODULE_NAME := "libertas_sdio"
 
 PRODUCT_COPY_FILES += \
@@ -43,11 +42,13 @@ PRODUCT_COPY_FILES += \
 	device/buglabs/bug20/ts.conf:system/etc/ts.conf \
 	device/buglabs/bug20/ts.env:system/etc/ts.env \
 	device/buglabs/bug20/calibrate.sh:system/bin/calibrate.sh \
+	device/buglabs/bug20/pointercal:data/system/tslib/pointercal \
 	device/buglabs/bug20/init.rc:root/init.rc
 
 PRODUCT_COPY_FILES += \
 	device/buglabs/bug20/sd8686.bin:system/etc/firmware/sd8686.bin \
 	device/buglabs/bug20/sd8686_helper.bin:system/etc/firmware/sd8686_helper.bin \
-	device/buglabs/bug20/Marvell-Licence.txt:system/etc/firmware/Marvell-Licence.txt
+	device/buglabs/bug20/Marvell-Licence.txt:system/etc/firmware/Marvell-Licence.txt \
+	device/buglabs/bug20/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf 
 
 include frameworks/base/data/sounds/AudioPackage2.mk
