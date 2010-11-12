@@ -46,9 +46,9 @@ PRODUCT_COPY_FILES += \
 	device/buglabs/bug20/init.rc:root/init.rc
 
 PRODUCT_COPY_FILES += \
-	device/buglabs/bug20/sd8686.bin:root/etc/firmware/sd8686.bin \
-	device/buglabs/bug20/sd8686_helper.bin:root/etc/firmware/sd8686_helper.bin \
-	device/buglabs/bug20/Marvell-Licence.txt:root/etc/firmware/Marvell-Licence.txt \
+	device/buglabs/bug20/sd8686.bin:system/etc/firmware/sd8686.bin \
+	device/buglabs/bug20/sd8686_helper.bin:system/etc/firmware/sd8686_helper.bin \
+	device/buglabs/bug20/Marvell-Licence.txt:system/etc/firmware/Marvell-Licence.txt \
 	device/buglabs/bug20/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf 
 
 include frameworks/base/data/sounds/AudioPackage2.mk
