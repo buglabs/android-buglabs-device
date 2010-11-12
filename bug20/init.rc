@@ -4,7 +4,10 @@
 on early-init
     symlink /initlogo.rle.bak /initlogo.rle
 
-on init
+
+    insmod /system/lib/modules/kernel/drivers/bmi/pims/video/bmi_video_core.ko
+    insmod /system/lib/modules/kernel/drivers/bmi/pims/lcd/bmi_lcd_core.ko
+    write /sys/devices/platform/omapfb/graphics:fb0/bits_per_pixel 16
 
 sysclktz 0
 
@@ -177,6 +180,7 @@ loglevel 3
     chown root root /cache/lost+found
     chmod 0770 /cache/lost+found
 
+
 on early-boot
     # Assume files are not there
     mkdir /data/system/tslib 0777 system system
@@ -187,9 +191,6 @@ on early-boot
     chown system system /data/system
     chown system system /data/system/tslib
     chown system system /data/system/pointercal
-
-    insmod /system/lib/modules/bmi_video_core.ko
-    insmod /system/lib/modules/bmi_lcd_core.ko
 
 on boot
 # basic network init
@@ -288,11 +289,10 @@ on boot
     class_start default
 
 # load video
-    insmod /system/lib/modules/2.6.32.9-g066f368/kernel/drivers/bmi/pims/video/bmi_video_core.ko
-    insmod /system/lib/modules/2.6.32.9-g066f368/kernel/drivers/bmi/pims/lcd/bmi_lcd_core.ko
+#    insmod /system/lib/modules/2.6.32.9-g066f368/kernel/drivers/bmi/pims/video/bmi_video_core.ko
+#    insmod /system/lib/modules/2.6.32.9-g066f368/kernel/drivers/bmi/pims/lcd/bmi_lcd_core.ko
+#    write /sys/devices/platform/omapfb/graphics:fb0/bits_per_pixel 16
     
-# XXX cekay load other bmis: lcd
-
 # bug 2, cekay .. workaround unimplemented suspend for bmi bus
     write /sys/power/wake_lock my_lock
 
