@@ -21,6 +21,9 @@ BOARD_HAVE_BLUETOOTH := false
 
 BOARD_USES_TSLIB := true
 
+# this done by copying all the kernel modules
+TARGET_NO_BUILD_WIFI := true
+
 BOARD_USES_ALSA_AUDIO := true
 BUILD_WITH_ALSA_UTILS := true
 
