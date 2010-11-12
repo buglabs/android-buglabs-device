@@ -287,6 +287,16 @@ on boot
 
     class_start default
 
+# load video
+    insmod /system/lib/modules/2.6.32.9-g066f368/kernel/drivers/bmi/pims/video/bmi_video_core.ko
+    insmod /system/lib/modules/2.6.32.9-g066f368/kernel/drivers/bmi/pims/lcd/bmi_lcd_core.ko
+    
+# XXX cekay load other bmis: lcd
+
+# bug 2, cekay .. workaround unimplemented suspend for bmi bus
+    write /sys/power/wake_lock my_lock
+
+
 ## Daemon processes to be run by init.
 ##
 service console /system/bin/sh
