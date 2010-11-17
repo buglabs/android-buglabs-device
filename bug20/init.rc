@@ -24,12 +24,6 @@ loglevel 3
     export ASEC_MOUNTPOINT /mnt/asec
     export BOOTCLASSPATH /system/framework/core.jar:/system/framework/ext.jar:/system/framework/framework.jar:/system/framework/android.policy.jar:/system/framework/services.jar
 
-#    setprop log.tag.Event_Hub ERROR
-#    setprop log.tag.InputManagerService ERROR
-#    setprop log.tag.dalvikvm ERROR
-#    setprop log.tag.KeyInputQueue ERROR
-#    setprop log.tag.InputDevice DEBUG
-
 # Backward compatibility
     symlink /system/etc /etc
     symlink /sys/kernel/debug /d
@@ -156,8 +150,16 @@ loglevel 3
     mkdir /data/misc/vpn/profiles 0770 system system
     # give system access to wpa_supplicant.conf for backup and restore
     mkdir /data/misc/wifi 0770 wifi wifi
+    mkdir /data/misc/wifi/sockets 0770 wifi wifi
     chmod 0770 /data/misc/wifi
     chmod 0660 /data/misc/wifi/wpa_supplicant.conf
+
+    # without this symlink WifiStateTracker cannot connect to the wpa_supplicant
+    symlink /data/misc/wifi/wpa_supplicant /data/system/wpa_supplicant
+
+    # This directory is expected to exist for dhcp to work
+    mkdir /data/misc/dhcp 0770 wifi wifi
+
     mkdir /data/local 0771 shell shell
     mkdir /data/local/tmp 0771 shell shell
     mkdir /data/data 0771 system system
@@ -200,6 +202,16 @@ on boot
 
 # set RLIMIT_NICE to allow priorities from 19 to -20
     setrlimit 13 40 40
+
+# Enable one of these if you need to debug something (add new ones as you wish)
+#    setprop log.tag.Event_Hub ERROR
+#    setprop log.tag.InputManagerService ERROR
+#    setprop log.tag.dalvikvm ERROR
+#    setprop log.tag.KeyInputQueue ERROR
+#    setprop log.tag.InputDevice DEBUG
+#    setprop log.tag.WifiHW DEBUG
+#    setprop log.tag.WifiService DEBUG
+#    setprop log.tag.WifiStateTracker DEBUG
 
 # Define the oom_adj values for the classes of processes that can be
 # killed by the kernel.  These are used in ActivityManagerService.
@@ -423,10 +435,6 @@ service dumpstate /system/bin/dumpstate -s
 
 service wpa_supplicant /system/bin/wpa_supplicant \
     -Dwext -iwlan0 -c/data/misc/wifi/wpa_supplicant.conf
-#   we will start as root and wpa_supplicant will switch to user wifi
-#   after setting up the capabilities required for WEXT
-#   user wifi
-#   group wifi inet keystore
     socket wpa_wlan0 dgram 660 wifi wifi
     disabled
     oneshot

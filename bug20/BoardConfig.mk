@@ -38,20 +38,31 @@ WIFI_DRIVER_MODULE_PATH := "/system/lib/modules/kernel/drivers/net/wireless/libe
 #WIFI_DRIVER_FW_AP_PATH := "/etc/firmware/sd8686.bin"
 WIFI_DRIVER_MODULE_NAME := "libertas_sdio"
 
+# Grouped the files top copy a bit for better readability
+
+# Most basic things
+PRODUCT_COPY_FILES += \
+	device/buglabs/bug20/initlogo.rle:root/initlogo.rle.bak \
+	device/buglabs/bug20/init.rc:root/init.rc
+
+# Configurations for the low-level services
 PRODUCT_COPY_FILES += \
 	device/buglabs/bug20/vold.fstab:system/etc/vold.fstab \
 	device/buglabs/bug20/asound.conf:system/etc/asound.conf \
-	device/buglabs/bug20/initlogo.rle:root/initlogo.rle.bak \
-	device/buglabs/bug20/ts.conf:system/etc/ts.conf \
-	device/buglabs/bug20/ts.env:system/etc/ts.env \
-	device/buglabs/bug20/calibrate.sh:system/bin/calibrate.sh \
-	device/buglabs/bug20/pointercal:data/system/tslib/pointercal \
-	device/buglabs/bug20/init.rc:root/init.rc
+	device/buglabs/bug20/dhcpcd.conf:system/etc/dhcpcd/dhcpcd.conf
 
+# Wifi firmware and wpa_supplicant configuration
 PRODUCT_COPY_FILES += \
 	device/buglabs/bug20/sd8686.bin:system/etc/firmware/sd8686.bin \
 	device/buglabs/bug20/sd8686_helper.bin:system/etc/firmware/sd8686_helper.bin \
 	device/buglabs/bug20/Marvell-Licence.txt:system/etc/firmware/Marvell-Licence.txt \
 	device/buglabs/bug20/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf 
+
+# All things touchscreen
+PRODUCT_COPY_FILES += \
+	device/buglabs/bug20/ts.conf:system/etc/ts.conf \
+	device/buglabs/bug20/ts.env:system/etc/ts.env \
+	device/buglabs/bug20/pointercal:data/system/tslib/pointercal \
+	device/buglabs/bug20/calibrate.sh:system/bin/calibrate.sh
 
 include frameworks/base/data/sounds/AudioPackage2.mk
