@@ -17,6 +17,9 @@ TARGET_CPU_ABI2 := armeabi
 TARGET_ARCH_VARIANT := armv7-a-neon
 TARGET_BOARD_PLATFORM := omap3
 
+# This ends up as 'ro.product.board'
+TARGET_BOOTLOADER_BOARD_NAME := bug20
+
 BOARD_HAVE_BLUETOOTH := false
 
 BOARD_USES_TSLIB := true
