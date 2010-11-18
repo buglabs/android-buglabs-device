@@ -158,7 +158,8 @@ loglevel 3
     symlink /data/misc/wifi/wpa_supplicant /data/system/wpa_supplicant
 
     # This directory is expected to exist for dhcp to work
-    mkdir /data/misc/dhcp 0770 wifi wifi
+    mkdir /data/misc/dhcp 0770 dhcp dhcp
+    chown dhcp dhcp /data/misc/dhcp
 
     mkdir /data/local 0771 shell shell
     mkdir /data/local/tmp 0771 shell shell
