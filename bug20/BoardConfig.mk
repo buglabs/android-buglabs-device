@@ -46,7 +46,7 @@ WIFI_DRIVER_MODULE_NAME := "libertas_sdio"
 # Most basic things
 PRODUCT_COPY_FILES += \
 	device/buglabs/bug20/initlogo.rle:root/initlogo.rle.bak \
-	device/buglabs/bug20/init.rc:root/init.rc
+	device/buglabs/bug20/init.rc:root/sbin/init
 
 # Configurations for the low-level services
 PRODUCT_COPY_FILES += \
