@@ -1,0 +1,7 @@
+#
+# system.prop for BUG 20 
+#
+
+android.keylayout.TWL4030_Keypad=/system/usr/keylayout/TWL4030_Keypad.kl
+hw.keyboards.0.devname=TWL4030_Keypad
+hw.keyboards.65540.devname=TWL4030_Keypad

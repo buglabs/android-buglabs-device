@@ -3,7 +3,7 @@
 # Make initlogo available
 on early-init
     symlink /initlogo.rle.bak /initlogo.rle
-
+    setprop android.keylayout.TWL4030_Keypad /system/usr/keylayout/bug.kl
 
     insmod /system/lib/modules/kernel/drivers/bmi/pims/video/bmi_video_core.ko
     insmod /system/lib/modules/kernel/drivers/bmi/pims/lcd/bmi_lcd_core.ko
@@ -209,7 +209,7 @@ on boot
 #    setprop log.tag.InputManagerService ERROR
 #    setprop log.tag.dalvikvm ERROR
 #    setprop log.tag.KeyInputQueue ERROR
-#    setprop log.tag.InputDevice DEBUG
+    setprop log.tag.InputDevice DEBUG
 #    setprop log.tag.WifiHW DEBUG
 #    setprop log.tag.WifiService DEBUG
 #    setprop log.tag.WifiStateTracker DEBUG
