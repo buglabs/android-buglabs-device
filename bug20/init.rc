@@ -3,7 +3,6 @@
 # Make initlogo available
 on early-init
     symlink /initlogo.rle.bak /initlogo.rle
-    setprop android.keylayout.TWL4030_Keypad /system/usr/keylayout/bug.kl
 
     insmod /system/lib/modules/kernel/drivers/bmi/pims/video/bmi_video_core.ko
     insmod /system/lib/modules/kernel/drivers/bmi/pims/lcd/bmi_lcd_core.ko

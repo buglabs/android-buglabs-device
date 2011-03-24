@@ -67,22 +67,9 @@ PRODUCT_COPY_FILES += \
 	device/buglabs/bug20/ts.env:system/etc/ts.env \
 	device/buglabs/bug20/pointercal:data/system/tslib/pointercal \
 	device/buglabs/bug20/calibrate.sh:system/bin/calibrate.sh
-	
-PRODUCT_COPY_FILES += \
-	device/buglabs/bug20/
 
 # Ends up in 'default.prop'
 ADDITIONAL_DEFAULT_PROPERTIES += \
-	wifi.interface=wlan0
-	
-ADDITIONAL_BUILD_PROPERTIES += \
-	hw.keyboards.0.devname=TWL4030 Keypad \
-	hw.keyboards.65540.devname=TWL4030 Keypad \
-	android.keylayout.TWL4030 Keypad=/system/usr/keylayout/TWL4030_Keypad.kl
-	
-ADDITIONAL_SYSTEM_PROPERTIES += \
-	hw.keyboards.0.devname=TWL4030 Keypad \
-	hw.keyboards.65540.devname=TWL4030 Keypad \
-	android.keylayout.TWL4030 Keypad=/system/usr/keylayout/TWL4030_Keypad.kl
+	wifi.interface=wlan0	
 
 include frameworks/base/data/sounds/AudioPackage2.mk
