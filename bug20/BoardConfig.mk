@@ -76,13 +76,13 @@ ADDITIONAL_DEFAULT_PROPERTIES += \
 	wifi.interface=wlan0
 	
 ADDITIONAL_BUILD_PROPERTIES += \
-	hw.keyboards.0.devname=TWL4030_Keypad \
-	hw.keyboards.65540.devname=TWL4030_Keypad \
-	android.keylayout.TWL4030_Keypad=/system/usr/keylayout/TWL4030_Keypad.kl
+	hw.keyboards.0.devname=TWL4030 Keypad \
+	hw.keyboards.65540.devname=TWL4030 Keypad \
+	android.keylayout.TWL4030 Keypad=/system/usr/keylayout/TWL4030_Keypad.kl
 	
 ADDITIONAL_SYSTEM_PROPERTIES += \
-	hw.keyboards.0.devname=TWL4030_Keypad \
-	hw.keyboards.65540.devname=TWL4030_Keypad \
-	android.keylayout.TWL4030_Keypad=/system/usr/keylayout/TWL4030_Keypad.kl
+	hw.keyboards.0.devname=TWL4030 Keypad \
+	hw.keyboards.65540.devname=TWL4030 Keypad \
+	android.keylayout.TWL4030 Keypad=/system/usr/keylayout/TWL4030_Keypad.kl
 
 include frameworks/base/data/sounds/AudioPackage2.mk
