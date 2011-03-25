@@ -208,7 +208,7 @@ on boot
 #    setprop log.tag.InputManagerService ERROR
 #    setprop log.tag.dalvikvm ERROR
 #    setprop log.tag.KeyInputQueue ERROR
-    setprop log.tag.InputDevice DEBUG
+#    setprop log.tag.InputDevice DEBUG
 #    setprop log.tag.WifiHW DEBUG
 #    setprop log.tag.WifiService DEBUG
 #    setprop log.tag.WifiStateTracker DEBUG
