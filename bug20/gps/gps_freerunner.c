@@ -1365,7 +1365,7 @@ const GpsInterface* gps_get_hardware_interface()
 /*****                                                       *****/
 /*****************************************************************/
 /*****************************************************************/
-
+/* TODO: Adapt this function to work with BMI */
 static void gps_dev_power(int state)
 {
     char   prop[PROPERTY_VALUE_MAX];
@@ -1383,7 +1383,7 @@ static void gps_dev_power(int state)
     } while (fd < 0 && errno == EINTR);
 
     if (fd < 0) {
-        LOGE("could not open gps power interfcae: %s", prop );
+        LOGE("could not open GPS power interface: %s", prop );
         return;
     }
 
