@@ -16,6 +16,7 @@ TARGET_CPU_ABI := armeabi-v7a
 TARGET_CPU_ABI2 := armeabi
 TARGET_ARCH_VARIANT := armv7-a-neon
 TARGET_BOARD_PLATFORM := omap3
+BOARD_GPS_LIBRARIES := libgps
 
 # This ends up as 'ro.product.board'
 TARGET_BOOTLOADER_BOARD_NAME := bug20
@@ -51,6 +52,7 @@ PRODUCT_COPY_FILES += \
 # Configurations for the low-level services
 PRODUCT_COPY_FILES += \
 	device/buglabs/bug20/vold.fstab:system/etc/vold.fstab \
+	device/buglabs/bug20/gps.conf:system/etc/gps.conf \
 	device/buglabs/bug20/asound.conf:system/etc/asound.conf \
 	device/buglabs/bug20/dhcpcd.conf:system/etc/dhcpcd/dhcpcd.conf
 
