@@ -105,7 +105,7 @@ typedef struct {
 static GpsState  _gps_state[1];
 static GpsState *gps_state = _gps_state;
 
-#define GPS_POWER_IF "/sys/bus/platform/devices/neo1973-pm-gps.0/power_on"
+#define GPS_POWER_IF "/sys/devices/platform/omap_bmi_slot.2/bmi-2/bmi-dev-2/vendor"
 
 #define GPS_DEV_SLOW_UPDATE_RATE (10)
 #define GPS_DEV_HIGH_UPDATE_RATE (1)
