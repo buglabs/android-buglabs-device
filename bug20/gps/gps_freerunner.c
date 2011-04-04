@@ -29,7 +29,7 @@
 #include <signal.h>
 #include <unistd.h>
 
-#define  LOG_TAG  "gps_fr"
+#define  LOG_TAG  "gps"
 
 #include <cutils/log.h>
 #include <cutils/sockets.h>
