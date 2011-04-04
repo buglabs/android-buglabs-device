@@ -21,7 +21,7 @@ BOARD_GPS_LIBRARIES := libgps
 # This ends up as 'ro.product.board'
 TARGET_BOOTLOADER_BOARD_NAME := bug20
 
-BOARD_HAVE_BLUETOOTH := false
+BOARD_HAVE_BLUETOOTH := true
 
 BOARD_USES_TSLIB := true
 
