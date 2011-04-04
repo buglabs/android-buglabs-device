@@ -13,7 +13,7 @@ LOCAL_SHARED_LIBRARIES := \
 	libc
 # include any shared library dependencies
 
-LOCAL_SRC_FILES += LOCAL_SRC_FILES += \
+LOCAL_SRC_FILES += \
 	gps_freerunner.c 
 
 LOCAL_CFLAGS += \
