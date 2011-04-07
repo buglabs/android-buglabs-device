@@ -24,6 +24,7 @@ TARGET_BOOTLOADER_BOARD_NAME := bug20
 BOARD_HAVE_BLUETOOTH := true
 
 BOARD_USES_TSLIB := true
+BOARD_USES_BUSYBOX : = true
 
 # this done by copying all the kernel modules
 TARGET_NO_BUILD_WIFI := true
