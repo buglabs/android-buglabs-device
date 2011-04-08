@@ -28,7 +28,7 @@ loglevel 3
     symlink /sys/kernel/debug /d
 # for bug 2.0
     symlink /dev/graphics/fb0 /dev/fb0
-
+	
 # create mountpoints
     mkdir /mnt 0775 root system
     mkdir /mnt/sdcard 0000 system system
@@ -189,6 +189,8 @@ on early-boot
     exec /system/bin/logwrapper /system/bin/calibrate.sh
     chmod 0777 /data/system/tslib/pointercal
 
+    exec /system/bin/logwrapper /system/xbin/stty -F /dev/ttyS0 -onlcr
+
     # Fix permissions
     chown system system /data/system
     chown system system /data/system/tslib
@@ -215,7 +217,7 @@ on boot
 
 # GPS driver settings
 	# For now hardcode GPS for ttyS0
-	setprop ro.kernel.android.gps=serial8250.0
+	setprop ro.kernel.android.gps serial8250.0
 	# Renable following line when/if power interface is available via BMI for GPS
 	#setprop gps.power_on /sys/devices/platform/omap_bmi_slot.2/bmi-2/bmi-dev-2/	
 	
@@ -321,7 +323,7 @@ on boot
 
 ## Daemon processes to be run by init.
 ##
-service console /system/bin/sh
+service console /system/xbin/sh
     console
 
 # adbd is controlled by the persist.service.adb.enable system property
