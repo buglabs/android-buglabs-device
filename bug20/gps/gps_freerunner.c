@@ -105,13 +105,10 @@ typedef struct {
 static GpsState  _gps_state[1];
 static GpsState *gps_state = _gps_state;
 
-#define GPS_POWER_IF "/sys/devices/platform/omap_bmi_slot.2/bmi-2/bmi-dev-2/vendor"
+// #define GPS_POWER_IF "/sys/devices/platform/omap_bmi_slot.2/bmi-2/bmi-dev-2/vendor"
 
 #define GPS_DEV_SLOW_UPDATE_RATE (10)
 #define GPS_DEV_HIGH_UPDATE_RATE (1)
-
-#define GPS_DEV_LOW_BAUD  (B9600)
-#define GPS_DEV_HIGH_BAUD (B19200)
 
 static void gps_dev_init(int fd);
 static void gps_dev_deinit(int fd);
@@ -1368,6 +1365,8 @@ const GpsInterface* gps_get_hardware_interface()
 /* TODO: Adapt this function to work with BMI */
 static void gps_dev_power(int state)
 {
+
+/*
     char   prop[PROPERTY_VALUE_MAX];
     int fd;
     char cmd = '0';
@@ -1400,6 +1399,7 @@ static void gps_dev_power(int state)
     close(fd);
 
     DFR("gps power state = %c", cmd);
+*/
 
     return;
 
@@ -1525,8 +1525,6 @@ static void gps_dev_deinit(int fd)
 
 static void gps_dev_start(int fd)
 {
-  // Set full message rate
-  gps_dev_set_message_rate(fd, GPS_DEV_HIGH_UPDATE_RATE);
 
   D("gps dev start initiated");
 
@@ -1534,9 +1532,6 @@ static void gps_dev_start(int fd)
 
 static void gps_dev_stop(int fd)
 {
-
-  // Set slow message rate
-  gps_dev_set_message_rate(fd, GPS_DEV_SLOW_UPDATE_RATE);
 
   D("gps dev stop initiated");
 
