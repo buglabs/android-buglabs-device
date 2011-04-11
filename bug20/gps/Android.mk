@@ -14,7 +14,7 @@ LOCAL_SHARED_LIBRARIES := \
 # include any shared library dependencies
 
 LOCAL_SRC_FILES += \
-	gps_freerunner.c 
+	gps_bug20.c 
 
 LOCAL_CFLAGS += \
 # include any needed compile flags
