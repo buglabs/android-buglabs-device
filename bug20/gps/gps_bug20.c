@@ -1,4 +1,6 @@
-/* //hardware/hw/gps/gps_freerunner.c
+/* //hardware/hw/gps/gps_bug20.c
+**
+** This file was adapted from gps_freerunner.c for use on the BUG20 device.
 **
 ** Copyright 2006, The Android Open Source Project
 ** Copyright 2009, Michael Trimarchi <michael@panicking.kicks-ass.org>
@@ -105,10 +107,10 @@ typedef struct {
 static GpsState  _gps_state[1];
 static GpsState *gps_state = _gps_state;
 
+// TODO implement power management of GPS when BMI power interface is available in android kernel.
+// See https://github.com/buglabs/android/issues/30
+//
 // #define GPS_POWER_IF "/sys/devices/platform/omap_bmi_slot.2/bmi-2/bmi-dev-2/vendor"
-
-#define GPS_DEV_SLOW_UPDATE_RATE (10)
-#define GPS_DEV_HIGH_UPDATE_RATE (1)
 
 static void gps_dev_init(int fd);
 static void gps_dev_deinit(int fd);
@@ -559,16 +561,6 @@ nmea_reader_parse( NmeaReader*  r )
     }
 
     nmea_tokenizer_init(tzer, r->in, r->in + r->pos);
-#if GPS_DEBUG
-    {
-        int  n;
-        D("Found %d tokens", tzer->count);
-        for (n = 0; n < tzer->count; n++) {
-            Token  tok = nmea_tokenizer_get(tzer,n);
-            D("%2d: '%.*s'", n, tok.end-tok.p, tok.p);
-        }
-    }
-#endif
 
     tok = nmea_tokenizer_get(tzer, 0);
 
@@ -909,6 +901,7 @@ gps_state_done( GpsState*  s )
 static void
 gps_state_start( GpsState*  s )
 {
+	D("gps_state_start");
     char  cmd = CMD_START;
     int   ret;
 
@@ -1026,6 +1019,7 @@ gps_state_thread( void*  arg )
                         goto Exit;
                     }
                     else if (cmd == CMD_START) {
+                    	D("if cmd gps_state_start");
                         if (!started) {
                             D("gps thread starting  location_cb=%p", state->callbacks.location_cb);
                             started = 1;
@@ -1227,7 +1221,7 @@ Fail:
 
 
 static int
-freerunner_gps_init(GpsCallbacks* callbacks)
+bug20_gps_init(GpsCallbacks* callbacks)
 {
     GpsState*  s = _gps_state;
 
@@ -1243,7 +1237,7 @@ freerunner_gps_init(GpsCallbacks* callbacks)
 }
 
 static void
-freerunner_gps_cleanup(void)
+bug20_gps_cleanup(void)
 {
     GpsState*  s = _gps_state;
 
@@ -1253,8 +1247,9 @@ freerunner_gps_cleanup(void)
 
 
 static int
-freerunner_gps_start()
+bug20_gps_start()
 {
+	D("bug20_gps_start");
     GpsState*  s = _gps_state;
 
     if (!s->init) {
@@ -1269,7 +1264,7 @@ freerunner_gps_start()
 
 
 static int
-freerunner_gps_stop()
+bug20_gps_stop()
 {
     GpsState*  s = _gps_state;
 
@@ -1285,7 +1280,7 @@ freerunner_gps_stop()
 
 
 static void
-freerunner_gps_set_fix_frequency(int freq)
+bug20_gps_set_fix_frequency(int freq)
 {
     GpsState*  s = _gps_state;
 
@@ -1302,17 +1297,17 @@ freerunner_gps_set_fix_frequency(int freq)
 }
 
 static int
-freerunner_gps_inject_time(GpsUtcTime time, int64_t timeReference, int uncertainty)
+bug20_gps_inject_time(GpsUtcTime time, int64_t timeReference, int uncertainty)
 {
     return 0;
 }
 
 static void
-freerunner_gps_delete_aiding_data(GpsAidingData flags)
+bug20_gps_delete_aiding_data(GpsAidingData flags)
 {
 }
 
-static int freerunner_gps_set_position_mode(GpsPositionMode mode, int fix_frequency)
+static int bug20_gps_set_position_mode(GpsPositionMode mode, int fix_frequency)
 {
     GpsState*  s = _gps_state;
     
@@ -1333,26 +1328,26 @@ static int freerunner_gps_set_position_mode(GpsPositionMode mode, int fix_freque
 }
 
 static const void*
-freerunner_gps_get_extension(const char* name)
+bug20_gps_get_extension(const char* name)
 {
     return NULL;
 }
 
-static const GpsInterface  freerunnerGpsInterface = {
-    freerunner_gps_init,
-    freerunner_gps_start,
-    freerunner_gps_stop,
-    freerunner_gps_set_fix_frequency,
-    freerunner_gps_cleanup,
-    freerunner_gps_inject_time,
-    freerunner_gps_delete_aiding_data,
-    freerunner_gps_set_position_mode,
-    freerunner_gps_get_extension,
+static const GpsInterface  bug20GpsInterface = {
+    bug20_gps_init,
+    bug20_gps_start,
+    bug20_gps_stop,
+    bug20_gps_set_fix_frequency,
+    bug20_gps_cleanup,
+    bug20_gps_inject_time,
+    bug20_gps_delete_aiding_data,
+    bug20_gps_set_position_mode,
+    bug20_gps_get_extension,
 };
 
 const GpsInterface* gps_get_hardware_interface()
 {
-    return &freerunnerGpsInterface;
+    return &bug20GpsInterface;
 }
 
 /*****************************************************************/
