@@ -195,6 +195,8 @@ on early-boot
     chown system system /data/system
     chown system system /data/system/tslib
     chown system system /data/system/pointercal
+    
+    chown system system /dev/ttyS0
 
 on boot
 # basic network init
@@ -217,7 +219,7 @@ on boot
 
 # GPS driver settings
 	# For now hardcode GPS for ttyS0
-	setprop ro.kernel.android.gps serial8250.0
+	setprop ro.kernel.android.gps ttyS0
 	# Renable following line when/if power interface is available via BMI for GPS
 	#setprop gps.power_on /sys/devices/platform/omap_bmi_slot.2/bmi-2/bmi-dev-2/	
 	
