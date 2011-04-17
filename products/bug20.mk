@@ -1,7 +1,8 @@
 $(call inherit-product, $(SRC_TARGET_DIR)/product/generic.mk)
 
 PRODUCT_PACKAGES += \
-    buglabs-demo-app
+    buglabs-demo-app \
+    sensors.bug20 
 
 # Overrides
 PRODUCT_NAME := bug20
