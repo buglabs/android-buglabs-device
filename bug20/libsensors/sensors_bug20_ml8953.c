@@ -267,67 +267,40 @@ int sensors_poll(struct sensors_data_device_t *dev, sensors_data_t* values)
     struct input_event ev;
     int ret;
     uint32_t new_sensors = 0;
-    int select_dim;
+    unsigned char ax = 0, ay = 0, az = 0;
 
-    select_dim = (fd > control_fd[CONTROL_READ]) ?
-                 fd + 1 : control_fd[CONTROL_READ] + 1;
     while (1)
     {
-        FD_ZERO(&rfds);
-        FD_SET(fd, &rfds);
-        FD_SET(control_fd[CONTROL_READ], &rfds);
-
-        do {
-            ret = select(select_dim, &rfds, NULL, NULL, 0);
-        } while (ret < 0 && errno == EINTR);
-
-        if (FD_ISSET(control_fd[CONTROL_READ], &rfds))
-        {
-            char ch;
-            read(control_fd[CONTROL_READ], &ch, sizeof(ch));
-            LOGD("Wake up by the control system\n");
-            return -EWOULDBLOCK;
-        }
-
         ret = read(fd, &ev, sizeof(ev));
         if (ret < (int)sizeof(ev))
             break;
 
-        FD_CLR(control_fd[CONTROL_READ], &rfds);
+        if (ev.code == ABS_X && ax == 0) {
+        	sensors.acceleration.x = ev.value;
+        	//abs(ev.value * CONVERT);
+			ax = 1;
+        }
+		   if (ev.code == ABS_Y && ay == 0) {
+			sensors.acceleration.y = ev.value;
+			ay = 1;
+		}
+		if (ev.code == ABS_Z && az == 0) {
+			sensors.acceleration.z = ev.value;
+			az = 1;
+       	}
 
-        if (ev.type == EV_ABS)
-        {
-            /* Orientation or acceleration event */
-            switch (ev.code)
-            {
-            case ABS_X:
-                new_sensors |= ACCELERATION_X;
-                sensors.acceleration.x = abs(ev.value * CONVERT);
-                break;
-            case ABS_Y:
-                new_sensors |= ACCELERATION_Y;
-                sensors.acceleration.y = abs(ev.value * CONVERT);
-                break;
-            case ABS_Z:
-                new_sensors |= ACCELERATION_Z;
-                sensors.acceleration.z = abs(ev.value * CONVERT);
-                break;
-            }
-        }
-        else if (ev.type == EV_SYN &&
-                 (new_sensors & SENSORS_ACCELERATION_ALL))
-        {
-            int64_t t = ev.time.tv_sec * SEC_TO_NSEC + ev.time.tv_usec *
-                        USEC_TO_NSEC;
-            new_sensors = 0;
-            sensors.time = t;
-            LOGD("%s: sensor event %f, %f, %f\n", __FUNCTION__,
-               sensors.acceleration.x, sensors.acceleration.y,
-               sensors.acceleration.z);
-            *values = sensors;
-            values->sensor = ID_ACCELERATION;
-            return ID_ACCELERATION;
-        }
+		if (ax == 1 && ay == 1 && az == 1) {
+			int64_t t = ev.time.tv_sec * SEC_TO_NSEC + ev.time.tv_usec *
+						USEC_TO_NSEC;
+			new_sensors = 0;
+			sensors.time = t;
+			LOGD("%s: sensor event %f, %f, %f\n", __FUNCTION__,
+			   sensors.acceleration.x, sensors.acceleration.y,
+			   sensors.acceleration.z);
+			*values = sensors;
+			values->sensor = ID_ACCELERATION;
+			return ID_ACCELERATION;
+		}
     }
     return 0;
 }

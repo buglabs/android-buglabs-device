@@ -24,7 +24,7 @@ LOCAL_PRELINK_MODULE := false
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_PATH := $(TARGET_OUT_SHARED_LIBRARIES)/hw
 LOCAL_SHARED_LIBRARIES := liblog libcutils
-LOCAL_SRC_FILES := sensors_freerunner.c
+LOCAL_SRC_FILES := sensors_bug20_ml8953.c
 LOCAL_MODULE := sensors.bug20
 include $(BUILD_SHARED_LIBRARY)
 
