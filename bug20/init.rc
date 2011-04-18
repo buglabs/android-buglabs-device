@@ -197,6 +197,7 @@ on early-boot
     chown system system /data/system/pointercal
     
     chown system system /dev/ttyS0
+    chown system system /data/app
 
 on boot
 # basic network init
