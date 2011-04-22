@@ -43,13 +43,16 @@
 #define ID_BASE SENSORS_HANDLE_BASE
 #define ID_ACCELERATION (ID_BASE+0)
 
+#define EVENT_TYPE_YAW              ABS_RX
+#define EVENT_TYPE_PITCH            ABS_RY
+#define EVENT_TYPE_ROLL             ABS_RZ
+
 #define LSG                     (980.0f)
 #define CONVERT                 (GRAVITY_EARTH / LSG)
 #define SENSORS_ACCELERATION    (1 << ID_ACCELERATION)
-#define INPUT_DEVICE               "/dev/input/event3"
+#define INPUT_DEVICE            "/dev/input/event3"
 #define SUPPORTED_SENSORS       (SENSORS_ACCELERATION)
 #define EVENT_MASK_ACCEL_ALL    ( (1 << ABS_X) | (1 << ABS_Y) | (1 << ABS_Z))
-#define DEFAULT_THRESHOLD 100
 
 #define ACCELERATION_X (1 << ABS_X)
 #define ACCELERATION_Y (1 << ABS_Y)
@@ -62,10 +65,10 @@
 #define CONTROL_WRITE 1
 #define WAKE_SOURCE 0x1a
 
-uint32_t active_sensors;
 int sensor_fd = -1;
 int event_fd = -1;
 int control_fd[2] = { -1, -1 };
+
 sensors_data_t sensors;
 
 static int
@@ -187,19 +190,7 @@ static native_handle_t *control_open_data_source(struct sensors_control_device_t
 static int control_activate(struct sensors_control_device_t *dev,
                             int handle, int enabled)
 {
-	LOGD("control_activate");
-    uint32_t mask = (1 << handle);
-    uint32_t sensors;
-    uint32_t new_sensors, active, changed;
-
-    sensors = enabled ? mask : 0;
-    active = active_sensors;
-    new_sensors = (active & ~mask) | (sensors & mask);
-    changed = active ^ new_sensors;
-    if (!changed)
-        return 0;
-
-    active_sensors = new_sensors;
+	//TODO possibly turn on/off accelerometer here.
 
     if (!enabled)
         LOGD("Deactivate sensor\n");
@@ -211,7 +202,7 @@ static int control_activate(struct sensors_control_device_t *dev,
 
 static int control_set_delay(struct sensors_control_device_t *dev, int32_t ms)
 {
-    LOGD("Control set delay %d ms is not supported and fix to 400\n", ms);
+    LOGD("Control set delay %d\n", ms);
     return 0;
 }
 
@@ -239,10 +230,7 @@ int sensors_open(struct sensors_data_device_t *dev, native_handle_t* hd)
     event_fd = dup(hd->data[0]);
     sensors.vector.status = SENSOR_STATUS_ACCURACY_HIGH;
     LOGD("Open sensor\n");
-  /*  write_int("/sys/bus/spi/drivers/lis302dl/spi3.1/threshold",
-              DEFAULT_THRESHOLD);
-    write_int("/sys/bus/spi/drivers/lis302dl/spi3.0/threshold",
-              DEFAULT_THRESHOLD);*/
+
     native_handle_close(hd);
     native_handle_delete(hd);
 
@@ -261,7 +249,7 @@ int sensors_close(struct sensors_data_device_t *dev)
 
 int sensors_poll(struct sensors_data_device_t *dev, sensors_data_t* values)
 {
-	LOGD("sensor poll");
+	//LOGD("sensor poll");
     int fd = event_fd;
     fd_set rfds;
     struct input_event ev;
@@ -284,16 +272,18 @@ int sensors_poll(struct sensors_data_device_t *dev, sensors_data_t* values)
 
         if (ev.type == EV_ABS) {
 			if (ev.code == ABS_X && ax == 0) {
-				gx = ev.value;
-				//abs(ev.value * CONVERT);
+				gx = ev.value * -1;
+				//gx = abs(ev.value * CONVERT);
 				ax = 1;
 			}
 			if (ev.code == ABS_Y && ay == 0) {
 				gy = ev.value;
+				//gy = abs(ev.value * CONVERT);
 				ay = 1;
 			}
 			if (ev.code == ABS_Z && az == 0) {
 				gz = ev.value;
+				//gz = abs(ev.value * CONVERT);
 				az = 1;
 			}
         }
@@ -303,7 +293,7 @@ int sensors_poll(struct sensors_data_device_t *dev, sensors_data_t* values)
 						USEC_TO_NSEC;
 			new_sensors = 0;
 			sensors.time = t;
-			LOGD("%s: sensor event %d, %d, %d\n", __FUNCTION__, gx, gy, gz);
+			//LOGD("%s: sensor event %d, %d, %d\n", __FUNCTION__, gx, gy, gz);
 
 			sensors.acceleration.x = gx;
 			sensors.acceleration.y = gy;
