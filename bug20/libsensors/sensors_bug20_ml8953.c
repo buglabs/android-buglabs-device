@@ -105,9 +105,9 @@ static const struct sensor_t bug20_sensor_list[] =
         .version = 1,
         .handle = ID_ACCELERATION,
         .type = SENSOR_TYPE_ACCELEROMETER,
-        .maxRange = (GRAVITY_EARTH * 2.3f),
-        .resolution = (GRAVITY_EARTH * 2.3f) / 128.0f,
-        .power = 3.0f,
+        .maxRange = 3.0f,
+        .resolution = 0.5f,
+        .power = 2.5f,
         .reserved = {},
     },
 };
@@ -268,39 +268,52 @@ int sensors_poll(struct sensors_data_device_t *dev, sensors_data_t* values)
     int ret;
     uint32_t new_sensors = 0;
     unsigned char ax = 0, ay = 0, az = 0;
+    short gx = 0, gy = 0, gz = 0;
+    int rcount = 0;
 
-    while (1)
+    while (rcount < 100)
     {
+    	rcount++;
         ret = read(fd, &ev, sizeof(ev));
-        if (ret < (int)sizeof(ev))
-            break;
-
-        if (ev.code == ABS_X && ax == 0) {
-        	sensors.acceleration.x = ev.value;
-        	//abs(ev.value * CONVERT);
-			ax = 1;
+        if (ret < (int)sizeof(ev)) {
+        	   fprintf(stderr, "ret == %d\n", ret);
+        	   perror("read");
+        	   close(fd);
+        	   return 0;
         }
-		   if (ev.code == ABS_Y && ay == 0) {
-			sensors.acceleration.y = ev.value;
-			ay = 1;
-		}
-		if (ev.code == ABS_Z && az == 0) {
-			sensors.acceleration.z = ev.value;
-			az = 1;
-       	}
+
+        if (ev.type == EV_ABS) {
+			if (ev.code == ABS_X && ax == 0) {
+				gx = ev.value;
+				//abs(ev.value * CONVERT);
+				ax = 1;
+			}
+			if (ev.code == ABS_Y && ay == 0) {
+				gy = ev.value;
+				ay = 1;
+			}
+			if (ev.code == ABS_Z && az == 0) {
+				gz = ev.value;
+				az = 1;
+			}
+        }
 
 		if (ax == 1 && ay == 1 && az == 1) {
 			int64_t t = ev.time.tv_sec * SEC_TO_NSEC + ev.time.tv_usec *
 						USEC_TO_NSEC;
 			new_sensors = 0;
 			sensors.time = t;
-			LOGD("%s: sensor event %f, %f, %f\n", __FUNCTION__,
-			   sensors.acceleration.x, sensors.acceleration.y,
-			   sensors.acceleration.z);
+			LOGD("%s: sensor event %d, %d, %d\n", __FUNCTION__, gx, gy, gz);
+
+			sensors.acceleration.x = gx;
+			sensors.acceleration.y = gy;
+			sensors.acceleration.z = gz;
+
 			*values = sensors;
 			values->sensor = ID_ACCELERATION;
 			return ID_ACCELERATION;
 		}
+		usleep(5000);
     }
     return 0;
 }
