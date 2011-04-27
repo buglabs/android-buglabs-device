@@ -190,6 +190,8 @@ on early-boot
     chmod 0777 /data/system/tslib/pointercal
 
     exec /system/bin/logwrapper /system/xbin/stty -F /dev/ttyS0 -onlcr
+    
+    chmod 755 /system/bin/input
 
     # Fix permissions
     chown system system /data/system
