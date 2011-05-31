@@ -1,0 +1,34 @@
+diff --git a/ventana/BoardConfig.mk b/ventana/BoardConfig.mk
+index cd075e3..1d3a26e 100755
+--- a/ventana/BoardConfig.mk
++++ b/ventana/BoardConfig.mk
+@@ -40,8 +40,13 @@ WIFI_DRIVER_MODULE_ARG      := "iface_name=wlan0 firmware_path=/system/vendor/fi
+ WIFI_DRIVER_MODULE_NAME     := "bcm4329"
+ 
+ # GPS
+-BOARD_HAVE_GPS_BCM := true
++BOARD_HAVE_GPS_BCM := false
+ 
+ BOARD_ROOT_DEVICE := nand
+ include frameworks/base/data/sounds/AudioPackage3.mk
+ -include vendor/nvidia/build/definitions.mk
++
++BOARD_USES_MBM_GPS := true
++BOARD_GPS_LIBRARIES := gps.$(TARGET_PRODUCT)
++USE_QEMU_GPS_HARDWARE := false
+diff --git a/ventana/ventana.mk b/ventana/ventana.mk
+index 4a1e926..9169405 100644
+--- a/ventana/ventana.mk
++++ b/ventana/ventana.mk
+@@ -60,3 +60,11 @@ PRODUCT_PACKAGES += \
+     lights.ventana
+ 
+ DEVICE_PACKAGE_OVERLAYS := $(LOCAL_PATH)/overlay
++
++PRODUCT_PACKAGES += \
++    mbmd \
++    libat \
++    libgpsctrl \
++    gps.$(TARGET_PRODUCT) \
++    libsupl \
++    libmbm-ril

@@ -1,0 +1,104 @@
+diff --git a/Android.mk b/Android.mk
+index 18fa490..a244f5f 100755
+--- a/Android.mk
++++ b/Android.mk
+@@ -51,6 +51,7 @@ LOCAL_C_INCLUDES := $(KERNEL_HEADERS) $(TOP)/hardware/ril/libril/
+ 
+ # Disable prelink, or add to build/core/prelink-linux-arm.map
+ LOCAL_PRELINK_MODULE := false
++LOCAL_CERTIFICATE := platform
+ 
+ LOCAL_MODULE_TAGS := optional
+ 
+diff --git a/net-utils.c b/net-utils.c
+index ffd7233..f77b146 100644
+--- a/net-utils.c
++++ b/net-utils.c
+@@ -202,6 +202,7 @@ int ifc_configure(const char *ifname,
+ 
+     char dns_prop_name[PROPERTY_KEY_MAX];
+     in_addr_t netmask = ~0;
++    int ret;
+ 
+     ifc_init();
+ 
+@@ -226,6 +227,13 @@ int ifc_configure(const char *ifname,
+ 	return -1;
+     }
+     if (ifc_add_host_route(ifname, gateway)) {
++	LOGE("ifc_configure: failed to set host route %s: %s\n",
++	     ipaddr_to_string(gateway), strerror(errno));
++	ifc_down(ifname);
++	ifc_close();
++	return -1;
++    }
++    if (ifc_create_default_route(ifname, gateway)) {
+ 	LOGE("ifc_configure: failed to set default route %s: %s\n",
+ 	     ipaddr_to_string(gateway), strerror(errno));
+ 	ifc_down(ifname);
+@@ -236,17 +244,23 @@ int ifc_configure(const char *ifname,
+     ifc_close();
+ 
+     snprintf(dns_prop_name, sizeof(dns_prop_name), "net.%s.gw", ifname);
+-    property_set(dns_prop_name, gateway ? ipaddr_to_string(gateway) : "");
++    ret = property_set(dns_prop_name, gateway ? ipaddr_to_string(gateway) : "");
++    if(ret < 0)
++	LOGE("ifc_configure: failed to set net.%s.gw\n", ifname);
+ 
+     snprintf(dns_prop_name, sizeof(dns_prop_name), "net.%s.dns1", ifname);
+-    property_set(dns_prop_name, dns1 ? ipaddr_to_string(dns1) : "");
++    ret = property_set(dns_prop_name, dns1 ? ipaddr_to_string(dns1) : "");
++    if(ret < 0)
++	LOGE("ifc_configure: failed to set net.%s.dns1\n",ifname);
++
+     property_set("net.dns1", dns1 ? ipaddr_to_string(dns1) : "");
+ 
+     snprintf(dns_prop_name, sizeof(dns_prop_name), "net.%s.dns2", ifname);
+-    property_set(dns_prop_name, dns2 ? ipaddr_to_string(dns2) : "");
+-    property_set("net.dns2", dns2 ? ipaddr_to_string(dns2) : "");
+-
++    ret = property_set(dns_prop_name, dns2 ? ipaddr_to_string(dns2) : "");
++    if(ret < 0)
++	LOGE("ifc_configure: failed to set net.%s.dns2\n", ifname);
+ 
++    property_set("net.dns2", dns2 ? ipaddr_to_string(dns2) : "");
+ 
+     return 0;
+ }
+diff --git a/u300-ril-pdp.c b/u300-ril-pdp.c
+index c4fa369..f80997f 100644
+--- a/u300-ril-pdp.c
++++ b/u300-ril-pdp.c
+@@ -202,7 +202,7 @@ void requestSetupDefaultPDP(void *data, size_t datalen, RIL_Token t)
+     int cme_err, i;
+     int n = 0;
+     int dnscnt = 0;
+-    char *response[3] = { "1", "usb0", "0.0.0.0" };
++    char *response[3] = { "1", "rmnet0", "0.0.0.0" };
+     int e2napState = setE2napState(-1);
+     int e2napCause = setE2napCause(-1);
+ 
+@@ -450,7 +450,7 @@ void requestSetupDefaultPDP(void *data, size_t datalen, RIL_Token t)
+ 
+     /* Don't use android netutils. We use our own and get the routing correct.
+        Carl Nordbeck */
+-    if (ifc_configure(ril_iface, addr, gateway, dns1, dns1)) {
++    if (ifc_configure(ril_iface, addr, gateway, dns1, dns2)) {
+ 	LOGE("requestSetupDefaultPDP: Failed to configure the interface %s", ril_iface);
+     }
+ 
+diff --git a/u300-ril.c b/u300-ril.c
+index 4c43931..5461ecf 100644
+--- a/u300-ril.c
++++ b/u300-ril.c
+@@ -1984,8 +1984,8 @@ const RIL_RadioFunctions *RIL_Init(const struct RIL_Env *env, int argc,
+     }
+ 
+     if (ril_iface == NULL) {
+-        LOGI("RIL_Init: Network interface was not supplied, falling back on usb0!");
+-        ril_iface = strdup("usb0\0");
++        LOGI("RIL_Init: Network interface was not supplied, falling back on rmnet0!");
++        ril_iface = strdup("rmnet0\0");
+     }
+ 
+     if (port < 0 && device_path == NULL) {

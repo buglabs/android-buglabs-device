@@ -207,6 +207,17 @@ on boot
     hostname localhost
     domainname localdomain
 
+# Modifications for Sierra USB 598 CDMA dongle
+   #  insmod /system/lib/modules/kernel/drivers/usb/serial/usbserial.ko
+  #   insmod /system/lib/modules/kernel/drivers/usb/serial/option.ko
+ #    insmod /system/lib/modules/kernel/drivers/usb/storage/usb-storage.ko
+#     insmod /system/lib/modules/kernel/drivers/usb/serial/sierra.ko
+    
+ #    setprop rild.libargs "-d /dev/ttyUSB0"
+#	stop rild-daemon
+#	start rild-daemon
+#     chown radio system /dev/ttyUSB0
+ 
 # set RLIMIT_NICE to allow priorities from 19 to -20
     setrlimit 13 40 40
 
@@ -314,6 +325,26 @@ on boot
     setprop net.tcp.buffersize.umts    4094,87380,110208,4096,16384,110208
     setprop net.tcp.buffersize.edge    4093,26280,35040,4096,16384,35040
     setprop net.tcp.buffersize.gprs    4092,8760,11680,4096,8760,11680
+# Increase tcp receive buffer sizes
+    write /sys/kernel/ipv4/tcp_rmem_min 409600
+    write /sys/kernel/ipv4/tcp_rmem_def 10000000
+    write /sys/kernel/ipv4/tcp_rmem_max 10000000
+
+# Enable USB auto suspend for MBM devices
+#on device-added-/sys.... Does not work yet
+    write /sys/bus/usb/devices/1-1/power/autosuspend 2
+    write /sys/bus/usb/devices/1-1/power/control auto
+    write /sys/bus/usb/devices/1-1/power/wakeup enabled
+    write /sys/bus/usb/devices/2-1/power/autosuspend 2
+    write /sys/bus/usb/devices/2-1/power/control auto
+    write /sys/bus/usb/devices/2-1/power/wakeup enabled
+    symlink /dev/bus/usb/002/049 /dev/cdc-wdm0
+    symlink /dev/bus/usb/002/050 /dev/cdc-wdm1
+    chown system system /dev/cdc-wdm0
+    chmod 0666 /dev/cdc-wdm0
+    chown system system /dev/cdc-wdm1
+    chmod 0666 /dev/cdc-wdm1
+
 
     class_start default
 
@@ -360,11 +391,15 @@ service netd /system/bin/netd
 
 service debuggerd /system/bin/debuggerd
 
-service ril-daemon /system/bin/rild
+#service ril-daemon /system/bin/rild
+service ril-daemon /system/bin/rild -l /system/lib/libmbm-ril.so -- -d /dev/ttyACM1 -i rmnet0
     socket rild stream 660 root radio
     socket rild-debug stream 660 radio system
     user root
     group radio cache inet misc audio
+
+service mbmd /system/bin/mbmd /dev/ttyACM0 5521
+    user root
 
 service zygote /system/bin/app_process -Xzygote /system/bin --zygote --start-system-server
     socket zygote stream 666

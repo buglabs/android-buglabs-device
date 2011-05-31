@@ -1,0 +1,14 @@
+--- init/devices.c
++++ init/devices.c
+@@ -160,6 +160,11 @@
+     { "/dev/video0",        0660,   AID_ROOT,       AID_CAMERA,     1 },
+     { "/dev/video1",        0660,   AID_ROOT,       AID_CAMERA,     1 },
+     { "/dev/snd/",          0664,   AID_SYSTEM,     AID_AUDIO,      1 },
++    { "/dev/ttyACM0",       0660,   AID_RADIO,      AID_RADIO,      1 },
++    { "/dev/ttyACM2",       0660,   AID_SYSTEM,     AID_SYSTEM,     1 },
++    { "/dev/ttyACM1",       0660,   AID_RADIO,      AID_RADIO,      1 },
++    { "/dev/cdc-wdm0",      0660,   AID_SYSTEM,     AID_SYSTEM,     1 },
++    { "/dev/cdc-wdm1",      0660,   AID_SYSTEM,     AID_SYSTEM,     1 },
+     { NULL, 0, 0, 0, 0 },
+ };
+ 

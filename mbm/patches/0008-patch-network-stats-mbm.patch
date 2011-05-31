@@ -1,0 +1,47 @@
+diff --git a/core/java/android/net/MobileDataStateTracker.java b/core/java/android/net/MobileDataStateTracker.java
+index ffbd69d..f938362 100644
+--- a/core/java/android/net/MobileDataStateTracker.java
++++ b/core/java/android/net/MobileDataStateTracker.java
+@@ -88,6 +88,8 @@ public class MobileDataStateTracker extends NetworkStateTracker {
+         }
+ 
+         mDnsPropNames = new String[] {
++                "net.wwan0.dns1",
++                "net.wwan0.dns2",
+                 "net.rmnet0.dns1",
+                 "net.rmnet0.dns2",
+                 "net.eth0.dns1",
+diff --git a/core/jni/android_net_TrafficStats.cpp b/core/jni/android_net_TrafficStats.cpp
+index ff46bdd..f616d15 100644
+--- a/core/jni/android_net_TrafficStats.cpp
++++ b/core/jni/android_net_TrafficStats.cpp
+@@ -97,25 +97,25 @@ static jlong readTotal(char const* suffix) {
+ 
+ static jlong getMobileTxPackets(JNIEnv* env, jobject clazz) {
+     return tryBoth(
+-            "/sys/class/net/rmnet0/statistics/tx_packets",
++            "/sys/class/net/wwan0/statistics/tx_packets",
+             "/sys/class/net/ppp0/statistics/tx_packets");
+ }
+ 
+ static jlong getMobileRxPackets(JNIEnv* env, jobject clazz) {
+     return tryBoth(
+-            "/sys/class/net/rmnet0/statistics/rx_packets",
++            "/sys/class/net/wwan0/statistics/rx_packets",
+             "/sys/class/net/ppp0/statistics/rx_packets");
+ }
+ 
+ static jlong getMobileTxBytes(JNIEnv* env, jobject clazz) {
+     return tryBoth(
+-            "/sys/class/net/rmnet0/statistics/tx_bytes",
++            "/sys/class/net/wwan0/statistics/tx_bytes",
+             "/sys/class/net/ppp0/statistics/tx_bytes");
+ }
+ 
+ static jlong getMobileRxBytes(JNIEnv* env, jobject clazz) {
+     return tryBoth(
+-            "/sys/class/net/rmnet0/statistics/rx_bytes",
++            "/sys/class/net/wwan0/statistics/rx_bytes",
+             "/sys/class/net/ppp0/statistics/rx_bytes");
+ }
+ 

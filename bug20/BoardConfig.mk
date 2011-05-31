@@ -17,7 +17,7 @@ TARGET_CPU_ABI2 := armeabi
 TARGET_ARCH_VARIANT := armv7-a-neon
 TARGET_BOARD_PLATFORM := omap3
 BOARD_GPS_LIBRARIES := libgps
-
+BOARD_USES_MBM_GPS := false
 # This ends up as 'ro.product.board'
 TARGET_BOOTLOADER_BOARD_NAME := bug20
 

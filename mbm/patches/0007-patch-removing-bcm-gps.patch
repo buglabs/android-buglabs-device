@@ -1,0 +1,27 @@
+diff --git a/tegra/prebuilt/Android.mk b/tegra/prebuilt/Android.mk
+index d5218a5..aafde95 100644
+--- a/tegra/prebuilt/Android.mk
++++ b/tegra/prebuilt/Android.mk
+@@ -52,10 +52,12 @@ $(call add-nvprebuilt-binary,host/linux-x86/lib,libnvdioconverter.a,STATIC_LIBRA
+ $(call add-nvprebuilt-binary,host/linux-x86/lib,libnvtestresults.a,STATIC_LIBRARIES,true)
+ $(call add-nvprebuilt-binary,host/linux-x86/lib,libnvaes_ref.a,STATIC_LIBRARIES,true)
+ $(call add-nvprebuilt-binary,host/linux-x86/lib,libnvboothost.a,STATIC_LIBRARIES,true)
++ifeq ($(strip $(BOARD_HAVE_GPS_BCM)),true)
+ $(call add-nvprebuilt-binary,3rdparty/broadcom/gps/bin,glgps_nvidiaTegra2android,EXECUTABLES)
+ $(call add-nvprebuilt-binary,3rdparty/broadcom/gps/bin,gpsconfig-cardhu.xml,EXECUTABLES)
+ $(call add-nvprebuilt-binary,3rdparty/broadcom/gps/bin,gpsconfig.xml,EXECUTABLES)
+ $(call add-nvprebuilt-binary,3rdparty/broadcom/gps/bin,gpsconfig-whistler.xml,EXECUTABLES)
++endif
+ $(call add-nvprebuilt-binary,3rdparty/invensense/libsensors,libmlplatform.so,SHARED_LIBRARIES)
+ $(call add-nvprebuilt-binary,3rdparty/invensense/libsensors,libmpl.so,SHARED_LIBRARIES)
+ $(call add-nvprebuilt-binary,3rdparty/invensense/libsensors,libmllite.so,SHARED_LIBRARIES)
+@@ -108,7 +110,9 @@ $(call add-nvprebuilt-binary,target/product/ventana/lib,egl/libGLESv2_tegra.so,S
+ $(call add-nvprebuilt-binary,target/product/ventana/lib,egl/libGLESv1_CM_tegra.so,SHARED_LIBRARIES)
+ $(call add-nvprebuilt-binary,target/product/ventana/lib,egl/libEGL_tegra.so,SHARED_LIBRARIES)
+ $(call add-nvprebuilt-binary,target/product/ventana/lib,hw/gralloc.tegra.so,SHARED_LIBRARIES)
++ifeq ($(strip $(BOARD_HAVE_GPS_BCM)),true)
+ $(call add-nvprebuilt-binary,target/product/ventana/lib,hw/gps.ventana.so,SHARED_LIBRARIES)
++endif
+ $(call add-nvprebuilt-binary,target/product/ventana/lib,libnvmpeg4dec.a,STATIC_LIBRARIES)
+ $(call add-nvprebuilt-binary,target/product/ventana/lib,libnvddk_2d_v2_static.a,STATIC_LIBRARIES)
+ $(call add-nvprebuilt-binary,target/product/ventana/lib,libnvmm_video.so,SHARED_LIBRARIES)
