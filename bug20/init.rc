@@ -3,7 +3,9 @@
 # Make initlogo available
 on early-init
     symlink /initlogo.rle.bak /initlogo.rle
-
+    insmod /system/lib/modules/kernel/drivers/bmi/pims/camera/mt9t111.ko
+    insmod /system/lib/modules/kernel/drivers/bmi/pims/camera/bmi_camera.ko
+    insmod /system/lib/modules/kernel/drivers/bmi/pims/camera/bmi_li3m02cm.ko
     insmod /system/lib/modules/kernel/drivers/bmi/pims/video/bmi_video_core.ko
     insmod /system/lib/modules/kernel/drivers/bmi/pims/lcd/bmi_lcd_core.ko
     write /sys/devices/platform/omapfb/graphics:fb0/bits_per_pixel 16
@@ -316,6 +318,27 @@ on boot
     chown system system /sys/kernel/ipv4/tcp_rmem_min
     chown system system /sys/kernel/ipv4/tcp_rmem_def
     chown system system /sys/kernel/ipv4/tcp_rmem_max
+    chown system system /dev/media0
+    chmod 0666 /dev/media0
+    chmod 0666 /dev/video0
+    chmod 0666 /dev/video1
+    chmod 0666 /dev/video2
+    chmod 0666 /dev/video3
+    chmod 0666 /dev/video4
+    chmod 0666 /dev/video5
+    chmod 0666 /dev/video6
+    chmod 0666 /dev/video7
+    chmod 0666 /dev/video8
+
+    chmod 0666 /dev/subdev0
+    chmod 0666 /dev/subdev1
+    chmod 0666 /dev/subdev2
+    chmod 0666 /dev/subdev3
+    chmod 0666 /dev/subdev4
+    chmod 0666 /dev/subdev5
+    chmod 0666 /dev/subdev6
+    chmod 0666 /dev/subdev7
+    chmod 0666 /dev/subdev8
     chown root radio /proc/cmdline
 
 # Define TCP buffer sizes for various networks
@@ -352,7 +375,7 @@ on boot
 #    insmod /system/lib/modules/2.6.32.9-g066f368/kernel/drivers/bmi/pims/video/bmi_video_core.ko
 #    insmod /system/lib/modules/2.6.32.9-g066f368/kernel/drivers/bmi/pims/lcd/bmi_lcd_core.ko
 #    write /sys/devices/platform/omapfb/graphics:fb0/bits_per_pixel 16
-    
+
 # bug 2, cekay .. workaround unimplemented suspend for bmi bus
     write /sys/power/wake_lock my_lock
 
